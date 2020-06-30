@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+  app:
+    image: jeroeng/alpine-artisan:web7.3
+    volumes:
+      - .:/www:rw
+    ports:
+      - 80:80
+
+  mysql:
+    image: percona:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: payment
+      MYSQL_USER: rsol
+      MYSQL_PASSWORD: secret
+    volumes:
+      - mysql-data:/var/lib/mysql:rw
+    ports:
+      - 3306:3306
+
+  queue:
+    image: redis:5-alpine
+    ports:
+      - 6379:6379
+
+volumes:
+  mysql-data:
