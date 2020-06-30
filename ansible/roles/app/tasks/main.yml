@@ -1,0 +1,44 @@
+---
+# tasks file for app
+- name: Create web root dir
+  file:
+    path: "{{ base_root }}"
+    group: www-data
+    state: directory
+    mode: '0755'
+
+- name: Create a database
+  mysql_db:
+    name: payment
+    login_user: "{{ mysql_user }}"
+    login_password: "{{ mysql_password }}"
+    state: present
+
+- name: Add www-data group to current user
+  shell: usermod -a -G www-data slava_rudnev
+
+#- name: Git clone
+#  git:
+#    repo: https://github.com/RSol/payment.git
+#    dest: "{{ base_root }}"
+
+#- name: Composer install
+#  shell: cd "{{ base_root }}/app"; composer install
+
+#- name: Composer dump-autoload
+#  shell: cd "{{ base_root }}/app"; composer du
+
+- name: Create a log directory if it does not exist
+  file:
+    path: "{{ base_root }}/storage"
+    state: directory
+    mode: 0777
+    recurse: yes
+
+- name: confing
+  template:
+    src: main-local.j2
+    dest: "{{ base_root }}/.env"
+
+- name: Migrations
+  shell: cd "{{ base_root }}"; php artisan migrate

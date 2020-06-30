@@ -1,5 +1,7 @@
+# IDE
 .idea
 
+# pproject
 /node_modules
 /public/hot
 /public/storage
@@ -12,3 +14,8 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+
+# ansible
+/ansible/hosts.txt
+/ansible/roles/app/templates/main-local.j2
+/ansible/roles/app/defaults/main.yml
